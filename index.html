@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Town — Bayside, New York</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          forest:      '#1B3A2D',
+          'forest-mid':'#254D3C',
+          'forest-deep':'#0F2219',
+          'forest-lite':'#2E6349',
+          sage:        '#5E8C72',
+          'sage-light':'#A8C5B0',
+          'sage-pale': '#DFF0E6',
+          cream:       '#F6F2EA',
+          'cream-warm':'#EDE8DC',
+          parchment:   '#FBF9F4',
+          brass:       '#A8894A',
+          'brass-light':'#C9A96E',
+          'brass-pale':'#F0E6CE',
+          ink:         '#1A1A18',
+          muted:       '#6B6B5E',
+          border:      '#DDD8CC',
+        },
+        fontFamily: {
+          display: ['Cormorant', 'serif'],
+          body:    ['Instrument Sans', 'sans-serif'],
+          serif:   ['Instrument Serif', 'serif'],
+        },
+      }
+    }
+  }
+</script>
+<style>
+  /* ── BASE ─────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #FBF9F4;
+    color: #1A1A18;
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ──────────────── */
+  #cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 32px; height: 32px;
+    border: 1.5px solid rgba(168,137,74,0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  }
+  #cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 5px; height: 5px;
+    background: #C9A96E;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%,-50%);
+  }
+  body:has(a:hover) #cursor-ring,
+  body:has(button:hover) #cursor-ring {
+    width: 48px; height: 48px;
+    border-color: rgba(168,137,74,0.9);
+  }
+
+  /* ── SVG NOISE FILTER ──────────── */
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* ── NAV ──────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 48px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(15,34,25,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(168,137,74,0.12);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(168,137,74,0.45);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .nav-logo:hover .nav-logo-icon {
+    background: rgba(168,137,74,0.1);
+    border-color: rgba(201,169,110,0.8);
+  }
+
+  .nav-wordmark {
+    font-family: 'Cormorant', serif;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #F6F2EA;
+    line-height: 1;
+  }
+  .nav-wordmark em { font-style: italic; color: #C9A96E; }
+  .nav-wordmark-sub {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(246,242,234,0.28);
+    margin-top: 3px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(246,242,234,0.4);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0; right: 100%;
+    height: 1px;
+    background: #C9A96E;
+    transition: right 0.25s ease;
+  }
+  .nav-links a:hover { color: #F6F2EA; }
+  .nav-links a:hover::after { right: 0; }
+  .nav-links a:focus-visible { outline: 2px solid #A8894A; outline-offset: 4px; border-radius: 2px; }
+
+  .nav-cta {
+    background: #A8894A;
+    color: #0F2219;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 4px;
+    cursor: none;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: #C9A96E; transform: translateY(-1px); }
+  .nav-cta:active { transform: translateY(0); }
+  .nav-cta:focus-visible { outline: 2px solid #C9A96E; outline-offset: 3px; }
+
+  /* ── HERO ──────────────────────── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    background: #0F2219;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Fairway mowing stripes */
+  .hero-stripes {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      105deg,
+      transparent,
+      transparent 72px,
+      rgba(255,255,255,0.018) 72px,
+      rgba(255,255,255,0.018) 144px
+    );
+    pointer-events: none;
+  }
+
+  /* Two-tone green depth — lighter center, darker corners */
+  .hero-glow-1 {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 110% 90% at 50% 45%,
+      rgba(37,77,60,0.6) 0%,
+      rgba(15,34,25,0) 70%
+    );
+    pointer-events: none;
+  }
+
+  /* Subtle brass warmth at center-bottom */
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70vw;
+    height: 50vh;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(168,137,74,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Corner darkening */
+  .hero-glow-brass {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 95% at 50% 50%, transparent 40%, rgba(5,14,8,0.65) 100%);
+    pointer-events: none;
+  }
+
+  /* Fine brass grid — only at the edges, masked out in center */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(168,137,74,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,137,74,0.055) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 35%, black 80%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 35%, black 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 72px 48px 0;
+    max-width: 740px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(168,137,74,0.65);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: #A8894A;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .hero-h1 {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(80px, 9.5vw, 148px);
+    font-weight: 500;
+    line-height: 0.86;
+    color: #F6F2EA;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .hero-h1 em {
+    font-style: italic;
+    color: #C9A96E;
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(246,242,234,0.44);
+    line-height: 1.75;
+    max-width: 400px;
+    margin-bottom: 44px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: #A8894A;
+    color: #0F2219;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 5px;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 4px 16px rgba(168,137,74,0.3), 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .btn-primary:hover { background: #C9A96E; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(168,137,74,0.4), 0 2px 6px rgba(0,0,0,0.3); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:focus-visible { outline: 2px solid #C9A96E; outline-offset: 3px; }
+
+  .btn-ghost {
+    background: transparent;
+    color: rgba(246,242,234,0.6);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 15px 32px;
+    border: 1.5px solid rgba(246,242,234,0.18);
+    border-radius: 5px;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+  .btn-ghost:hover { border-color: rgba(201,169,110,0.55); color: #C9A96E; transform: translateY(-1px); }
+  .btn-ghost:active { transform: translateY(0); }
+  .btn-ghost:focus-visible { outline: 2px solid #C9A96E; outline-offset: 3px; }
+
+
+  /* Canvas grass */
+  #grass-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* ── SECTION SHARED ────────────── */
+  .section-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #5E8C72;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: #A8894A;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 500;
+    color: #0F2219;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 52px;
+  }
+
+  /* ── SCORECARD SECTION ─────────── */
+  #scorecard {
+    background: #FBF9F4;
+    padding: 120px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scorecard-bg-text {
+    position: absolute;
+    right: -2%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant', serif;
+    font-size: 280px;
+    font-weight: 500;
+    font-style: italic;
+    color: rgba(27,58,45,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  /* The actual scorecard table */
+  .scorecard-wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+  }
+
+  .scorecard-header-bar {
+    background: #1B3A2D;
+    border-radius: 10px 10px 0 0;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .scorecard-title-text {
+    font-family: 'Cormorant', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: #F6F2EA;
+    text-transform: uppercase;
+  }
+  .scorecard-title-text em { font-style: italic; color: #C9A96E; }
+
+  .scorecard-course-info {
+    text-align: right;
+  }
+  .scorecard-course-info p {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246,242,234,0.35);
+    line-height: 1.8;
+  }
+  .scorecard-course-info p span { color: rgba(201,169,110,0.6); }
+
+  /* Table structure */
+  .scorecard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #DDD8CC;
+    border-top: none;
+  }
+
+  .scorecard-table thead tr {
+    background: #254D3C;
+  }
+
+  .scorecard-table thead th {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246,242,234,0.45);
+    padding: 10px 16px;
+    text-align: left;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .scorecard-table thead th:first-child { color: #C9A96E; }
+  .scorecard-table thead th:last-child { border-right: none; }
+
+  .scorecard-table tbody tr {
+    border-bottom: 1px solid #DDD8CC;
+    transition: background 0.18s ease;
+  }
+  .scorecard-table tbody tr:last-child { border-bottom: none; }
+  .scorecard-table tbody tr:hover { background: #F6F2EA; }
+
+  .scorecard-table tbody td {
+    padding: 20px 16px;
+    vertical-align: middle;
+    border-right: 1px solid #DDD8CC;
+  }
+  .scorecard-table tbody td:last-child { border-right: none; }
+
+  /* Hole number cell */
+  .sc-hole-num {
+    font-family: 'Cormorant', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #1B3A2D;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .sc-hole-label {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #6B6B5E;
+    margin-top: 2px;
+  }
+
+  /* Service name cell */
+  .sc-service-name {
+    font-family: 'Cormorant', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #0F2219;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .sc-service-desc {
+    font-size: 12px;
+    color: #6B6B5E;
+    line-height: 1.6;
+    max-width: 340px;
+  }
+
+  /* Par cell */
+  .sc-par {
+    font-family: 'Cormorant', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: #5E8C72;
+    line-height: 1;
+    text-align: center;
+  }
+
+  /* Score/price cell */
+  .sc-price {
+    font-family: 'Cormorant', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: #0F2219;
+    line-height: 1;
+  }
+  .sc-price-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6B6B5E;
+    margin-top: 2px;
+  }
+
+  /* Badge cell */
+  .sc-badge {
+    display: inline-flex;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .sc-badge-green { background: #DFF0E6; color: #254D3C; }
+  .sc-badge-brass { background: #F0E6CE; color: #7A5C20; }
+  .sc-badge-dark  { background: #1B3A2D; color: #A8C5B0; }
+
+  /* CTA cell */
+  .sc-row-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1B3A2D;
+    text-decoration: none;
+    padding: 9px 18px;
+    border: 1.5px solid #1B3A2D;
+    border-radius: 4px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+  .sc-row-cta:hover { background: #1B3A2D; color: #C9A96E; transform: translateY(-1px); }
+  .sc-row-cta:active { transform: translateY(0); }
+  .sc-row-cta:focus-visible { outline: 2px solid #A8894A; outline-offset: 3px; }
+
+  .scorecard-footer-bar {
+    background: #0F2219;
+    border-radius: 0 0 10px 10px;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sc-total-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246,242,234,0.3);
+  }
+
+  .sc-total-score {
+    font-family: 'Cormorant', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #C9A96E;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ABOUT SECTION ─────────────── */
+  #about {
+    background: #1B3A2D;
+    padding: 120px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(168,137,74,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,137,74,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .about-layout {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+
+  .about-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(168,137,74,0.65);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .about-eyebrow::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: #A8894A;
+    display: block;
+  }
+
+  .about-title {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 500;
+    color: #F6F2EA;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .about-title em { font-style: italic; color: #C9A96E; display: block; }
+
+  .about-lead {
+    font-family: 'Cormorant', serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: rgba(246,242,234,0.8);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+  .about-lead em { font-style: italic; color: #A8C5B0; }
+
+  .about-body {
+    font-size: 14px;
+    color: rgba(246,242,234,0.42);
+    line-height: 1.85;
+    margin-bottom: 36px;
+  }
+
+  .about-stat-card {
+    background: rgba(15,34,25,0.7);
+    border: 1px solid rgba(168,137,74,0.2);
+    border-radius: 10px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .about-stat-num {
+    font-family: 'Cormorant', serif;
+    font-size: 64px;
+    font-weight: 500;
+    color: #C9A96E;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .about-stat-label {
+    font-size: 13px;
+    color: rgba(246,242,234,0.42);
+    line-height: 1.6;
+  }
+
+  /* About image */
+  .about-img-wrap {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    align-self: stretch;
+  }
+  .about-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+  }
+  /* Gradient overlay on the image */
+  .about-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(15,34,25,0.15) 0%, rgba(15,34,25,0.45) 100%);
+    mix-blend-mode: multiply;
+  }
+
+  /* ── TESTIMONIALS ─────────────── */
+  #testimonials {
+    background: #FBF9F4;
+    padding: 120px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .testi-card {
+    background: white;
+    border: 1px solid #DDD8CC;
+    border-radius: 12px;
+    padding: 32px;
+    position: relative;
+    box-shadow:
+      0 2px 8px rgba(27,58,45,0.04),
+      0 8px 24px rgba(27,58,45,0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .testi-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 4px 16px rgba(27,58,45,0.08),
+      0 16px 40px rgba(27,58,45,0.06);
+  }
+
+  .testi-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 16px;
+  }
+  .testi-star {
+    width: 12px; height: 12px;
+    color: #A8894A;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .testi-quote {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #1A1A18;
+    margin-bottom: 24px;
+  }
+
+  .testi-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #DDD8CC;
+  }
+
+  .testi-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #DFF0E6;
+    border: 1px solid rgba(94,140,114,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1B3A2D;
+    flex-shrink: 0;
+  }
+
+  .testi-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A18;
+  }
+  .testi-detail {
+    font-size: 11px;
+    color: #6B6B5E;
+    margin-top: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── VISIT SECTION ─────────────── */
+  #visit {
+    background: #0F2219;
+    padding: 120px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .visit-layout {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .visit-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(168,137,74,0.65);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .visit-eyebrow::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: #A8894A;
+    display: block;
+  }
+
+  .visit-title {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(40px, 4.5vw, 58px);
+    font-weight: 500;
+    color: #F6F2EA;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .visit-title em { font-style: italic; color: #C9A96E; display: block; }
+
+  .visit-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .visit-detail-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(168,137,74,0.12);
+    align-items: start;
+  }
+  .visit-detail-row:first-child { border-top: 1px solid rgba(168,137,74,0.12); }
+
+  .visit-detail-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(168,137,74,0.6);
+    padding-top: 2px;
+  }
+
+  .visit-detail-val {
+    font-size: 14px;
+    color: rgba(246,242,234,0.7);
+    line-height: 1.65;
+  }
+  .visit-detail-val strong {
+    font-weight: 600;
+    color: #F6F2EA;
+  }
+
+  .visit-cta-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
+
+  /* Map placeholder */
+  .visit-map {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background: #1B3A2D;
+    border: 1px solid rgba(168,137,74,0.2);
+    aspect-ratio: 4/3;
+  }
+
+  .visit-map-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1B3A2D;
+    background-image:
+      linear-gradient(rgba(168,137,74,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,137,74,0.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+    min-height: 300px;
+  }
+
+  .visit-map-pin {
+    width: 48px;
+    height: 48px;
+    background: rgba(168,137,74,0.15);
+    border: 1px solid rgba(168,137,74,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    animation: pin-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pin-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(168,137,74,0.3); }
+    50% { box-shadow: 0 0 0 12px rgba(168,137,74,0); }
+  }
+
+  .visit-map-address {
+    text-align: center;
+  }
+  .visit-map-address p {
+    font-family: 'Cormorant', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #F6F2EA;
+    margin-bottom: 6px;
+  }
+  .visit-map-address span {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(246,242,234,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ────────────────────── */
+  footer {
+    background: #0F2219;
+    border-top: 1px solid rgba(168,137,74,0.1);
+    padding: 56px 80px 40px;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .footer-mark {
+    font-family: 'Cormorant', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: #F6F2EA;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .footer-mark em { font-style: italic; color: #C9A96E; }
+
+  .footer-sub {
+    font-size: 11px;
+    color: rgba(246,242,234,0.25);
+    letter-spacing: 0.08em;
+    line-height: 1.9;
+  }
+
+  .footer-rule {
+    width: 1px; height: 48px;
+    background: rgba(246,242,234,0.08);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .footer-links a {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(246,242,234,0.28);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: #C9A96E; }
+  .footer-links a:focus-visible { outline: 2px solid #A8894A; outline-offset: 3px; border-radius: 2px; }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(246,242,234,0.07);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    color: rgba(246,242,234,0.16);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-badges {
+    display: flex;
+    gap: 10px;
+  }
+
+  .footer-badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(27,58,45,0.8);
+    color: #A8C5B0;
+    border: 1px solid rgba(94,140,114,0.25);
+  }
+
+  /* ── PAGE LOAD ANIMATION ─────── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow  { animation: fade-up 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s both; }
+  .hero-h1       { animation: fade-up 0.8s cubic-bezier(0.25,0.46,0.45,0.94) 0.35s both; }
+  .hero-sub      { animation: fade-up 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.5s both; }
+  .hero-ctas     { animation: fade-up 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.62s both; }
+
+  /* ── SCROLL REVEAL ─────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .reveal.visible {
+    animation: reveal-in 0.75s cubic-bezier(0.25,0.46,0.45,0.94) both;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @keyframes reveal-in {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    #hero { min-height: 100svh; }
+    .hero-content { padding: 72px 28px 0; }
+    #scorecard { padding: 80px 24px; }
+    .scorecard-table tbody td { padding: 14px 10px; }
+    #about { padding: 80px 24px; }
+    .about-layout { grid-template-columns: 1fr; gap: 48px; }
+    #testimonials { padding: 80px 24px; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    #visit { padding: 80px 24px; }
+    .visit-layout { grid-template-columns: 1fr; }
+    footer { padding: 56px 24px 40px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-links { align-items: flex-start; }
+    .scorecard-table { display: none; }
+    .scorecard-mobile { display: block; }
+  }
+
+  .scorecard-mobile { display: none; }
+
+  /* Service mobile cards */
+  .sc-mobile-card {
+    background: white;
+    border: 1px solid #DDD8CC;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .sc-mobile-top {
+    background: #1B3A2D;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sc-mobile-name {
+    font-family: 'Cormorant', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #F6F2EA;
+  }
+  .sc-mobile-hole {
+    font-family: 'Cormorant', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #C9A96E;
+    line-height: 1;
+  }
+  .sc-mobile-body {
+    padding: 16px 20px;
+  }
+  .sc-mobile-body p {
+    font-size: 13px;
+    color: #6B6B5E;
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+
+<!-- ── NAV ──────────────────────── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="20" r="3.5" stroke="rgba(201,169,110,0.75)" stroke-width="1" fill="none"/>
+        <line x1="12" y1="2" x2="12" y2="16.5" stroke="rgba(201,169,110,0.75)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M12 2.5 L20 6.5 L12 10.5" fill="rgba(168,137,74,0.4)" stroke="rgba(201,169,110,0.75)" stroke-width="0.8" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-wordmark">GOLF <em>Town</em></div>
+      <div class="nav-wordmark-sub">Bayside, New York</div>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#scorecard">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#visit">Visit</a></li>
+  </ul>
+
+  <a href="tel:+17183572346" class="nav-cta">Book Fitting</a>
+</nav>
+
+<!-- ── HERO ──────────────────────── -->
+<section id="hero">
+  <div class="hero-stripes"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-glow-brass"></div>
+  <div class="hero-grid"></div>
+  <div class="grain-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Est. 1999 · Bayside, New York</div>
+    <h1 class="hero-h1">
+      GOLF
+      <em>Town</em>
+    </h1>
+    <p class="hero-sub">
+      A Queens institution — where real expertise beats the big-box every time.
+      25+ years of honest prices, expert advice, and the brands you actually want.
+    </p>
+    <div class="hero-ctas">
+      <a href="#scorecard" class="btn-primary">Explore Services</a>
+      <a href="#visit" class="btn-ghost">Find the Shop</a>
+    </div>
+  </div>
+
+  <canvas id="grass-canvas"></canvas>
+</section>
+
+<!-- ── SCORECARD SERVICES ────────── -->
+<section id="scorecard">
+  <div class="scorecard-bg-text">Par</div>
+  <div class="reveal">
+    <div class="section-eyebrow">02 — Services</div>
+    <h2 class="section-title">The Card</h2>
+  </div>
+
+  <div class="scorecard-wrap reveal">
+    <!-- Header bar -->
+    <div class="scorecard-header-bar">
+      <div>
+        <div class="scorecard-title-text">Golf <em>Town</em> Scorecard</div>
+      </div>
+      <div class="scorecard-course-info">
+        <p>Course: <span>Bell Blvd, Bayside</span></p>
+        <p>Player: <span>Walk-in Welcome</span></p>
+        <p>Date: <span id="score-date"></span></p>
+      </div>
+    </div>
+
+    <!-- Desktop table -->
+    <table class="scorecard-table">
+      <thead>
+        <tr>
+          <th style="width:60px;">Hole</th>
+          <th>Service</th>
+          <th style="width:80px; text-align:center;">Par</th>
+          <th style="width:110px;">Starting At</th>
+          <th style="width:120px;">Status</th>
+          <th style="width:130px;">Book</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="sc-hole-num">1</div>
+            <div class="sc-hole-label">Hole</div>
+          </td>
+          <td>
+            <div class="sc-service-name">Custom Club Fitting</div>
+            <div class="sc-service-desc">Full bag analysis on our Foresight2 simulator. More data than any chain store — and the expertise to use it.</div>
+          </td>
+          <td style="text-align:center;"><div class="sc-par">4</div></td>
+          <td>
+            <div class="sc-price">$75</div>
+            <div class="sc-price-label">per session</div>
+          </td>
+          <td><span class="sc-badge sc-badge-green">Available Now</span></td>
+          <td><a href="tel:+17183572346" class="sc-row-cta">Call to Book →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-hole-num">2</div>
+            <div class="sc-hole-label">Hole</div>
+          </td>
+          <td>
+            <div class="sc-service-name">Grip Replacement</div>
+            <div class="sc-service-desc">All major grip brands. Changed while you wait — no appointment, no excuses. Done right, every time.</div>
+          </td>
+          <td style="text-align:center;"><div class="sc-par">3</div></td>
+          <td>
+            <div class="sc-price">$8</div>
+            <div class="sc-price-label">per club</div>
+          </td>
+          <td><span class="sc-badge sc-badge-green">Walk In</span></td>
+          <td><a href="#visit" class="sc-row-cta">Get Directions →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-hole-num">3</div>
+            <div class="sc-hole-label">Hole</div>
+          </td>
+          <td>
+            <div class="sc-service-name">Club Repair</div>
+            <div class="sc-service-desc">Reshafting, loft/lie adjustments, broken ferrules, refinishing. Fast turnaround with quality craftsmanship.</div>
+          </td>
+          <td style="text-align:center;"><div class="sc-par">4</div></td>
+          <td>
+            <div class="sc-price">$20</div>
+            <div class="sc-price-label">starts at</div>
+          </td>
+          <td><span class="sc-badge sc-badge-brass">1–2 Days</span></td>
+          <td><a href="tel:+17183572346" class="sc-row-cta">Call Ahead →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-hole-num">4</div>
+            <div class="sc-hole-label">Hole</div>
+          </td>
+          <td>
+            <div class="sc-service-name">Japanese Clubs</div>
+            <div class="sc-service-desc">Premium Japanese irons from Miura, Epon, Fourteen, and more. Brands the big-box stores won't even carry.</div>
+          </td>
+          <td style="text-align:center;"><div class="sc-par">5</div></td>
+          <td>
+            <div class="sc-price">In-Store</div>
+            <div class="sc-price-label">exclusive</div>
+          </td>
+          <td><span class="sc-badge sc-badge-dark">Ask In Store</span></td>
+          <td><a href="#visit" class="sc-row-cta">Come In →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-hole-num">5</div>
+            <div class="sc-hole-label">Hole</div>
+          </td>
+          <td>
+            <div class="sc-service-name">Free Fitting Analysis</div>
+            <div class="sc-service-desc">10-minute no-appointment swing analysis. Walk in, get real data, leave knowing what actually needs fixing.</div>
+          </td>
+          <td style="text-align:center;"><div class="sc-par">3</div></td>
+          <td>
+            <div class="sc-price">Free</div>
+            <div class="sc-price-label">no appointment</div>
+          </td>
+          <td><span class="sc-badge sc-badge-green">Today</span></td>
+          <td><a href="#visit" class="sc-row-cta">Walk In →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-hole-num">6</div>
+            <div class="sc-hole-label">Hole</div>
+          </td>
+          <td>
+            <div class="sc-service-name">New Club Sales</div>
+            <div class="sc-service-desc">All major brands including Titleist, Callaway, TaylorMade, Ping and Cobra. Honest advice, no quota pressure.</div>
+          </td>
+          <td style="text-align:center;"><div class="sc-par">4</div></td>
+          <td>
+            <div class="sc-price">Best Price</div>
+            <div class="sc-price-label">guaranteed</div>
+          </td>
+          <td><span class="sc-badge sc-badge-green">In Stock</span></td>
+          <td><a href="#visit" class="sc-row-cta">Shop Now →</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Footer bar -->
+    <div class="scorecard-footer-bar">
+      <span class="sc-total-label">Total Services</span>
+      <span class="sc-total-score">Golf Town · Bayside · Est. 1999</span>
+    </div>
+
+    <!-- Mobile cards (shown on small screens) -->
+    <div class="scorecard-mobile" style="margin-top:16px;">
+      <div class="sc-mobile-card">
+        <div class="sc-mobile-top">
+          <div class="sc-mobile-name">Custom Club Fitting</div>
+          <div class="sc-mobile-hole">1</div>
+        </div>
+        <div class="sc-mobile-body">
+          <p>Full bag analysis on our Foresight2 simulator. More data than any chain store.</p>
+          <span class="sc-badge sc-badge-green">Available Now</span>
+        </div>
+      </div>
+      <div class="sc-mobile-card">
+        <div class="sc-mobile-top">
+          <div class="sc-mobile-name">Grip Replacement</div>
+          <div class="sc-mobile-hole">2</div>
+        </div>
+        <div class="sc-mobile-body">
+          <p>Changed while you wait. No appointment needed. From $8/club.</p>
+          <span class="sc-badge sc-badge-green">Walk In</span>
+        </div>
+      </div>
+      <div class="sc-mobile-card">
+        <div class="sc-mobile-top">
+          <div class="sc-mobile-name">Club Repair</div>
+          <div class="sc-mobile-hole">3</div>
+        </div>
+        <div class="sc-mobile-body">
+          <p>Reshafting, adjustments, refinishing. Fast turnaround, done right.</p>
+          <span class="sc-badge sc-badge-brass">1–2 Days</span>
+        </div>
+      </div>
+      <div class="sc-mobile-card">
+        <div class="sc-mobile-top">
+          <div class="sc-mobile-name">Free Fitting Analysis</div>
+          <div class="sc-mobile-hole">5</div>
+        </div>
+        <div class="sc-mobile-body">
+          <p>10-minute walk-in swing analysis. Real data, no obligation.</p>
+          <span class="sc-badge sc-badge-green">Free · Today</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────── -->
+<section id="about">
+  <div class="about-grid-bg"></div>
+  <div class="grain-overlay" style="opacity:0.03;"></div>
+
+  <div class="about-layout">
+    <div class="reveal">
+      <div class="about-eyebrow">01 — Our Story</div>
+      <h2 class="about-title">
+        A Queens
+        <em>Institution</em>
+      </h2>
+      <p class="about-lead">Where <em>real expertise</em> beats the big-box every time.</p>
+      <p class="about-body">
+        Golf Town has been on Bell Blvd for over 25 years. Owner Charlie built it on a simple idea: give golfers genuine knowledge, honest prices, and personal service you'll never find at a franchise. He carries all major brands — including premium Japanese clubs most shops don't touch — and uses a Foresight2 simulator for custom fitting that's more sophisticated than anything the chain stores offer.
+        <br><br>
+        This is the shop regulars check first. Not because it's the biggest, but because it's the best. Grip changes while you wait. Repairs done right. Staff who actually play the game and know what they're talking about.
+      </p>
+      <div class="about-stat-card">
+        <div class="about-stat-num">25+</div>
+        <div class="about-stat-label">Years serving<br>Bayside golfers.<br>Still going.</div>
+      </div>
+    </div>
+
+    <div class="about-img-wrap reveal" style="transition-delay:0.15s;">
+      <img src="https://placehold.co/600x700/1B3A2D/DFF0E6?text=Golf+Town" alt="Golf Town Bayside" class="about-img">
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ──────────────── -->
+<section id="testimonials">
+  <div class="reveal">
+    <div class="section-eyebrow">04 — Reviews</div>
+    <h2 class="section-title">What Golfers Say</h2>
+  </div>
+
+  <div class="testimonials-grid reveal" style="transition-delay:0.1s;">
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+      </div>
+      <p class="testi-quote">Went in yesterday to try the new TSi3 driver. Charlie let me try it with a couple different shafts on their tracker to see which one felt and performed better for me. I also got to try out the TM sim to see if there were any differences. Ended up purchasing the TSi3 with the tensei white shaft. Charlie and the other staff member were really helpful and told me to contact them if there were any issues. Definitely will be coming back once I need another upgrade!</p>
+      <div class="testi-meta">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="testi-name">Allen H.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+      </div>
+      <p class="testi-quote">Great golf shop! Charlie is honest, knowledgeable and very professional. Repair prices are fair and work is good and fast! Whenever I need anything golf related I always check Golf Town 1st!</p>
+      <div class="testi-meta">
+        <div class="testi-avatar">M</div>
+        <div>
+          <div class="testi-name">Myles F.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+        <span class="testi-star">★</span>
+      </div>
+      <p class="testi-quote">Wow..was very impressed today, went golfing at the driving range at Alley Pond. When I hit the ball, it flew so nice. Made me feel alive. Thank you
+
+Thank you for the help.</p>
+      <div class="testi-meta">
+        <div class="testi-avatar">X</div>
+        <div>
+          <div class="testi-name">X P.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VISIT ──────────────────────── -->
+<section id="visit">
+  <div class="hero-grid"></div>
+  <div class="grain-overlay" style="opacity:0.025;"></div>
+  <div class="hero-glow-1" style="opacity:0.5;"></div>
+
+  <div class="visit-layout">
+    <div class="reveal">
+      <div class="visit-eyebrow">05 — Find Us</div>
+      <h2 class="visit-title">
+        Come
+        <em>Play</em>
+      </h2>
+
+      <div class="visit-details">
+        <div class="visit-detail-row">
+          <div class="visit-detail-label">Address</div>
+          <div class="visit-detail-val">
+            <strong>4325 Bell Blvd</strong><br>
+            Bayside, NY 11361
+          </div>
+        </div>
+        <div class="visit-detail-row">
+          <div class="visit-detail-label">Hours</div>
+          <div class="visit-detail-val">
+            <strong>Mon – Sat:</strong> 10:00 AM – 8:00 PM<br>
+            <strong>Sun:</strong> 2:00 PM – 6:00 PM
+          </div>
+        </div>
+        <div class="visit-detail-row">
+          <div class="visit-detail-label">Phone</div>
+          <div class="visit-detail-val">
+            <strong>(718) 357-2346</strong>
+          </div>
+        </div>
+        <div class="visit-detail-row">
+          <div class="visit-detail-label">Parking</div>
+          <div class="visit-detail-val">
+            Street parking on Bell Blvd. Municipal lot one block north.
+          </div>
+        </div>
+      </div>
+
+      <div class="visit-cta-group">
+        <a href="tel:+17183572346" class="btn-primary">Call Us</a>
+        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-ghost">Get Directions</a>
+      </div>
+    </div>
+
+    <div class="visit-map reveal" style="transition-delay:0.15s;">
+      <div class="visit-map-placeholder">
+        <div class="visit-map-pin">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="20" r="3.5" stroke="rgba(201,169,110,0.8)" stroke-width="1" fill="none"/>
+            <line x1="12" y1="2" x2="12" y2="16.5" stroke="rgba(201,169,110,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M12 2.5 L20 6.5 L12 10.5" fill="rgba(168,137,74,0.45)" stroke="rgba(201,169,110,0.8)" stroke-width="0.8" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="visit-map-address">
+          <p>Golf Town</p>
+          <span>4325 Bell Blvd · Bayside, NY 11361</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-mark">GOLF <em>Town</em></div>
+      <div class="footer-sub">
+        4325 Bell Blvd · Bayside, NY 11361<br>
+        Est. 1999 · Locally owned by Charlie
+      </div>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-links">
+      <a href="#scorecard">Services</a>
+      <a href="#about">About</a>
+      <a href="#testimonials">Reviews</a>
+      <a href="#visit">Hours & Location</a>
+      <a href="tel:+17183572346">(718) 357-2346</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Golf Town Bayside. All rights reserved.</div>
+    <div class="footer-badges">
+      <span class="footer-badge">Locally Owned</span>
+      <span class="footer-badge">Est. 1999</span>
+      <span class="footer-badge">Foresight2 Certified</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Custom cursor ──
+  const ring = document.getElementById('cursor-ring');
+  const dot  = document.getElementById('cursor-dot');
+  let mx = -100, my = -100;
+  let rx = -100, ry = -100;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+
+  function animateCursor() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Force all reveals visible after a short delay so static screenshots work
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+  }, 50);
+
+  // ── Scorecard date ──
+  const dateEl = document.getElementById('score-date');
+  if (dateEl) {
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // ── Force-reveal all after scroll or timeout (helps with screenshots) ──
+  function forceRevealAll() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+  }
+  window.addEventListener('scroll', forceRevealAll, { once: true });
+  // Also force after 800ms so full-page screenshots capture everything
+  setTimeout(forceRevealAll, 800);
+
+  // ── Grass canvas ──
+  (function() {
+    const canvas  = document.getElementById('grass-canvas');
+    const heroEl  = document.getElementById('hero');
+    if (!canvas || !heroEl) return;
+    const ctx = canvas.getContext('2d');
+
+    let W, H, blades;
+    let mouseX = -9999, mouseY = -9999;
+    let inHero = false;
+
+    // Grass blade
+    class Blade {
+      constructor() { this.init(); }
+      init() {
+        // Distribute evenly across full canvas
+        this.baseX = Math.random() * W;
+        this.baseY = Math.random() * H;
+        this.height = 10 + Math.random() * 22;
+        this.thickness = 0.8 + Math.random() * 1.6;
+        // Green tones — visible but not garish
+        const g = Math.floor(80 + Math.random() * 60);
+        const a = 0.22 + Math.random() * 0.38;
+        this.color = `rgba(22,${g},42,${a})`;
+        // A few blades lighter/warmer
+        if (Math.random() < 0.18) {
+          this.color = `rgba(55,${g + 28},55,${a * 0.85})`;
+        }
+        // Occasional bright highlight blade
+        if (Math.random() < 0.07) {
+          this.color = `rgba(78,140,90,${a * 0.6})`;
+        }
+        this.phase   = Math.random() * Math.PI * 2;
+        this.speed   = 0.4 + Math.random() * 0.6;
+        this.sway    = 0;   // current mouse-driven sway
+        this.tSway   = 0;   // target sway
+        this.lean    = (Math.random() - 0.5) * 4; // natural lean
+      }
+      update(t) {
+        // Gentle wind
+        const wind = Math.sin(t * 0.0007 * this.speed + this.phase) * 2.5
+                   + Math.sin(t * 0.0013 * this.speed + this.phase * 1.3) * 1;
+
+        // Mouse repulsion
+        const dx = this.baseX - mouseX;
+        const dy = this.baseY - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        // Also repel from hole
+        const hdx = this.baseX - (holeX || W * 0.72);
+        const hdy = this.baseY - (holeY || H * 0.74);
+        const holeDist = Math.sqrt(hdx * hdx + hdy * hdy);
+        if (holeDist < 22) {
+          this.tSway = (hdx / (holeDist || 1)) * 14;
+          this.sway += (this.tSway - this.sway) * 0.12;
+          this.totalSway = this.sway + this.lean;
+          return;
+        }
+
+        const radius = 180;
+        if (inHero && dist < radius) {
+          const strength = (1 - dist / radius);
+          // Push blade away from cursor horizontally
+          this.tSway = (dx / dist) * strength * 18;
+        } else {
+          this.tSway = 0;
+        }
+
+        this.sway += (this.tSway - this.sway) * 0.12;
+        this.totalSway = wind + this.lean + this.sway;
+      }
+      draw() {
+        const tipX = this.baseX + this.totalSway;
+        const tipY = this.baseY - this.height;
+        const ctrlX = this.baseX + this.totalSway * 0.55;
+        const ctrlY = this.baseY - this.height * 0.58;
+
+        ctx.beginPath();
+        ctx.moveTo(this.baseX, this.baseY);
+        ctx.quadraticCurveTo(ctrlX, ctrlY, tipX, tipY);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth   = this.thickness;
+        ctx.lineCap     = 'round';
+        ctx.stroke();
+      }
+    }
+
+    // Hole position — lower-right quadrant, clear of text
+    let holeX, holeY;
+
+    function drawHole() {
+      holeX = W * 0.72;
+      holeY = H * 0.74;
+      const holeR = 14;
+      const poleH = 110;
+
+      // ── Hole shadow ──
+      const shadowGrad = ctx.createRadialGradient(holeX, holeY, 0, holeX, holeY, holeR * 2.2);
+      shadowGrad.addColorStop(0, 'rgba(0,0,0,0.55)');
+      shadowGrad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.ellipse(holeX, holeY, holeR * 2.2, holeR * 0.9, 0, 0, Math.PI * 2);
+      ctx.fillStyle = shadowGrad;
+      ctx.fill();
+
+      // ── Hole cup ──
+      ctx.beginPath();
+      ctx.ellipse(holeX, holeY, holeR, holeR * 0.42, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#050e07';
+      ctx.fill();
+      // Rim highlight
+      ctx.beginPath();
+      ctx.ellipse(holeX, holeY, holeR, holeR * 0.42, 0, Math.PI, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(168,137,74,0.35)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // ── Flagstick ──
+      ctx.beginPath();
+      ctx.moveTo(holeX + 1, holeY - holeR * 0.3);
+      ctx.lineTo(holeX + 1, holeY - poleH);
+      ctx.strokeStyle = 'rgba(201,169,110,0.9)';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // ── Flag ──
+      const flagW = 28, flagH = 18;
+      const flagTop = holeY - poleH;
+      ctx.beginPath();
+      ctx.moveTo(holeX + 1, flagTop);
+      ctx.lineTo(holeX + 1 + flagW, flagTop + flagH * 0.5);
+      ctx.lineTo(holeX + 1, flagTop + flagH);
+      ctx.closePath();
+      ctx.fillStyle = '#A8894A';
+      ctx.fill();
+      // Flag detail line
+      ctx.beginPath();
+      ctx.moveTo(holeX + 1, flagTop + flagH * 0.25);
+      ctx.lineTo(holeX + 1 + flagW * 0.6, flagTop + flagH * 0.5);
+      ctx.strokeStyle = 'rgba(240,230,206,0.4)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
+
+    function setup() {
+      W = heroEl.offsetWidth;
+      H = heroEl.offsetHeight;
+      canvas.width  = W;
+      canvas.height = H;
+
+      const count = Math.floor((W * H) / 320); // density — full area
+      blades = Array.from({ length: count }, () => new Blade());
+    }
+
+    function loop(t) {
+      ctx.clearRect(0, 0, W, H);
+      blades.forEach(b => { b.update(t); b.draw(); });
+      drawHole();
+      requestAnimationFrame(loop);
+    }
+
+    // Mouse tracking — only active when over the hero
+    heroEl.addEventListener('mousemove', e => {
+      const rect = heroEl.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      inHero = true;
+    });
+    heroEl.addEventListener('mouseleave', () => { inHero = false; });
+
+    window.addEventListener('resize', setup);
+    setup();
+    requestAnimationFrame(loop);
+  })();
+</script>
+</body>
+</html>
