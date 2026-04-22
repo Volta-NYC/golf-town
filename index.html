@@ -945,55 +945,6 @@
     aspect-ratio: 4/3;
   }
 
-  .visit-map-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #1B3A2D;
-    background-image:
-      linear-gradient(rgba(168,137,74,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(168,137,74,0.06) 1px, transparent 1px);
-    background-size: 36px 36px;
-    min-height: 300px;
-  }
-
-  .visit-map-pin {
-    width: 48px;
-    height: 48px;
-    background: rgba(168,137,74,0.15);
-    border: 1px solid rgba(168,137,74,0.4);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-    animation: pin-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pin-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(168,137,74,0.3); }
-    50% { box-shadow: 0 0 0 12px rgba(168,137,74,0); }
-  }
-
-  .visit-map-address {
-    text-align: center;
-  }
-  .visit-map-address p {
-    font-family: 'Cormorant', serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: #F6F2EA;
-    margin-bottom: 6px;
-  }
-  .visit-map-address span {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: rgba(246,242,234,0.3);
-    text-transform: uppercase;
-  }
 
   /* ── FOOTER ────────────────────── */
   footer {
@@ -1562,24 +1513,17 @@ Thank you for the help.</p>
 
       <div class="visit-cta-group">
         <a href="tel:+17183572346" class="btn-primary">Call Us</a>
-        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-ghost">Get Directions</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=4325+Bell+Blvd,+Bayside,+NY+11361" target="_blank" rel="noopener" class="btn-ghost">Get Directions</a>
       </div>
     </div>
 
     <div class="visit-map reveal" style="transition-delay:0.15s;">
-      <div class="visit-map-placeholder">
-        <div class="visit-map-pin">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="20" r="3.5" stroke="rgba(201,169,110,0.8)" stroke-width="1" fill="none"/>
-            <line x1="12" y1="2" x2="12" y2="16.5" stroke="rgba(201,169,110,0.8)" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M12 2.5 L20 6.5 L12 10.5" fill="rgba(168,137,74,0.45)" stroke="rgba(201,169,110,0.8)" stroke-width="0.8" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="visit-map-address">
-          <p>Golf Town</p>
-          <span>4325 Bell Blvd · Bayside, NY 11361</span>
-        </div>
-      </div>
+      <iframe
+        src="https://maps.google.com/maps?q=4325+Bell+Blvd,+Bayside,+NY+11361&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        width="100%" height="100%"
+        style="border:0; display:block; width:100%; height:100%; filter:saturate(0.75) contrast(1.05);"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Golf Town location"></iframe>
     </div>
   </div>
 </section>
